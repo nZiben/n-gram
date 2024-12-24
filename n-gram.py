@@ -1,35 +1,53 @@
 import numpy as np
-from random import choice, sample
-from string import punctuation
-s = words
+import random
+import string
 
+word_list = words 
 
-class N-model():
+class TextGenerator:
 
     def __init__(self):
+        pass
 
-    def generatetext():
-        global s
-        s1 = list(filter(lambda x: x not in punctuation, s))
-        s2 = ((' '.join((sample(s1, choice(range(5, 20)))))).lower()).split()
-        for i in s2:
-            s2.insert(0, i[0].upper() + i[1:])
-            break
-        s2.remove(s2[1])
-        for i in s2:
-            if s2.count(i) != 1:
-                del s2[' '.join(s2).rfind(i)]
-        return ' '.join(s2) + '.'
+    def generate_sentence(self):
+        global word_list
+        # Удаление знаков препинания
+        cleaned_words = [w for w in word_list if w not in string.punctuation]
+        
+        # Выбор случайного количества слов от 5 до 19
+        count = random.randint(5, 19)
+        selected = random.sample(cleaned_words, count)
+        
+        # Приведение всех слов к нижнему регистру
+        selected = [word.lower() for word in selected]
+        
+        # Капитализация первого слова
+        if selected:
+            selected[0] = selected[0].capitalize()
+        
+        # Удаление второго слова, если оно существует
+        if len(selected) > 1:
+            del selected[1]
+        
+        # Удаление дубликатов, сохраняя порядок
+        unique = []
+        for word in selected:
+            if word not in unique:
+                unique.append(word)
+        
+        # Формирование предложения
+        sentence = ' '.join(unique) + '.'
+        return sentence
 
-    def sample(self):
-        kolvo_strok = 10
-        for i in range(kolvo_strok):
-            flag = True
-            while flag:
+    def print_samples(self, sample_count=10):
+        for _ in range(sample_count):
+            while True:
                 try:
-                    print(generatetext())
-                    flag = False
+                    print(self.generate_sentence())
+                    break
                 except IndexError:
-                    s = words
+                    word_list = words  # Повторное присвоение, если возникла ошибка
 
-
+# Пример использования:
+# генератор = TextGenerator()
+# генератор.print_samples()
